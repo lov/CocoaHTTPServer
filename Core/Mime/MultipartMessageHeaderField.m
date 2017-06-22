@@ -37,7 +37,7 @@ NSString* extractParamValue(const char* bytes, NSUInteger length, NSStringEncodi
 	params = [[NSMutableDictionary alloc] initWithCapacity:1];
 
 	char* bytes = (char*)data.bytes;
-	NSUInteger length = data.length;
+	int length = (int)data.length;
 
 	int separatorOffset = findChar(bytes, length, ':');
 	if( (-1 == separatorOffset) || (separatorOffset >= length-2) ) {
@@ -92,7 +92,7 @@ NSString* extractParamValue(const char* bytes, NSUInteger length, NSStringEncodi
 	int offset = 0;
 	NSString* currentParam = nil;
 	BOOL insideQuote = NO;
-	while( offset < length ) {
+	while( offset < (int)length ) {
 		if( bytes[offset] == '\"' ) {
 			if( !offset || bytes[offset-1] != '\\' ) {
 			   insideQuote = !insideQuote;
@@ -179,7 +179,7 @@ NSString* extractParamValue(const char* bytes, NSUInteger length, NSStringEncodi
 
 int findChar(const char* str, NSUInteger length, char c) {
 	int offset = 0;
-	while( offset < length ) {
+	while( offset < (int)length ) {
 		if( str[offset] == c )
 			return offset;
 		++ offset;

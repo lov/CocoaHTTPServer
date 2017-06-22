@@ -36,10 +36,13 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
 #define WS_OP_PING                 9
 #define WS_OP_PONG                 10
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-function"
 static inline BOOL WS_OP_IS_FINAL_FRAGMENT(UInt8 frame)
 {
 	return (frame & 0x80) ? YES : NO;
 }
+#pragma clang diagnostic pop
 
 static inline BOOL WS_PAYLOAD_IS_MASKED(UInt8 frame)
 {
@@ -51,7 +54,7 @@ static inline NSUInteger WS_PAYLOAD_LENGTH(UInt8 frame)
 	return frame & 0x7F;
 }
 
-@interface WebSocket (PrivateAPI)
+@interface WebSocket (PrivateAPI) <GCDAsyncSocketDelegate>
 
 - (void)readRequestBody;
 - (void)sendResponseBody;
@@ -108,7 +111,7 @@ static inline NSUInteger WS_PAYLOAD_LENGTH(UInt8 frame)
 	if (!upgradeHeaderValue || !connectionHeaderValue) {
 		isWebSocket = NO;
 	}
-	else if (![upgradeHeaderValue caseInsensitiveCompare:@"WebSocket"] == NSOrderedSame) {
+	else if ([upgradeHeaderValue caseInsensitiveCompare:@"WebSocket"] != NSOrderedSame) {
 		isWebSocket = NO;
 	}
 	else if ([connectionHeaderValue rangeOfString:@"Upgrade" options:NSCaseInsensitiveSearch].location == NSNotFound) {
@@ -166,6 +169,7 @@ static inline NSUInteger WS_PAYLOAD_LENGTH(UInt8 frame)
 	
 	if ((self = [super init]))
 	{
+#if HTTP_LOG_VERBOSE
 		if (HTTP_LOG_VERBOSE)
 		{
 			NSData *requestHeaders = [aRequest messageData];
@@ -173,6 +177,7 @@ static inline NSUInteger WS_PAYLOAD_LENGTH(UInt8 frame)
 			NSString *temp = [[NSString alloc] initWithData:requestHeaders encoding:NSUTF8StringEncoding];
 			HTTPLogVerbose(@"%@[%p] Request Headers:\n%@", THIS_FILE, self, temp);
 		}
+#endif
 		
 		websocketQueue = dispatch_queue_create("WebSocket", NULL);
 		request = aRequest;
@@ -408,12 +413,13 @@ static inline NSUInteger WS_PAYLOAD_LENGTH(UInt8 frame)
 
 	NSData *responseHeaders = [wsResponse messageData];
 	
-	
+#if HTTP_LOG_VERBOSE
 	if (HTTP_LOG_VERBOSE)
 	{
 		NSString *temp = [[NSString alloc] initWithData:responseHeaders encoding:NSUTF8StringEncoding];
 		HTTPLogVerbose(@"%@[%p] Response Headers:\n%@", THIS_FILE, self, temp);
 	}
+#endif
 	
 	[asyncSocket writeData:responseHeaders withTimeout:TIMEOUT_NONE tag:TAG_HTTP_RESPONSE_HEADERS];
 }
@@ -491,6 +497,7 @@ static inline NSUInteger WS_PAYLOAD_LENGTH(UInt8 frame)
 	
 	[asyncSocket writeData:responseBody withTimeout:TIMEOUT_NONE tag:TAG_HTTP_RESPONSE_BODY];
 	
+#if HTTP_LOG_VERBOSE
 	if (HTTP_LOG_VERBOSE)
 	{
 		NSString *s1 = [[NSString alloc] initWithData:d1 encoding:NSASCIIStringEncoding];
@@ -508,6 +515,7 @@ static inline NSUInteger WS_PAYLOAD_LENGTH(UInt8 frame)
 		HTTPLogVerbose(@"responseBody: raw(%@) str(%@)", responseBody, sH);
 		
 	}
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

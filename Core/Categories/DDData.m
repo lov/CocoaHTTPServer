@@ -33,7 +33,7 @@ static char encodingTable[64] = {
     const unsigned char *dataBuffer = [self bytes];
     int i;
     
-    for (i = 0; i < [self length]; ++i)
+    for (i = 0; i < (int)[self length]; ++i)
 	{
         [stringBuffer appendFormat:@"%02x", (unsigned int)dataBuffer[i]];
 	}

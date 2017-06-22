@@ -82,7 +82,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
 // the HTTP_RESPONSE tag. For all other segments prior to the last segment use HTTP_PARTIAL_RESPONSE, or some other
 // tag of your own invention.
 
-@interface HTTPConnection (PrivateAPI)
+@interface HTTPConnection (PrivateAPI) <GCDAsyncSocketDelegate>
 - (void)startReadingRequest;
 - (void)sendResponseHeadersAndBody;
 @end
@@ -893,6 +893,7 @@ static NSMutableArray *recentNonces;
 {
 	HTTPLogTrace();
 	
+#if HTTP_LOG_VERBOSE
 	if (HTTP_LOG_VERBOSE)
 	{
 		NSData *tempData = [request messageData];
@@ -900,6 +901,7 @@ static NSMutableArray *recentNonces;
 		NSString *tempStr = [[NSString alloc] initWithData:tempData encoding:NSUTF8StringEncoding];
 		HTTPLogVerbose(@"%@[%p]: Received HTTP request:\n%@", THIS_FILE, self, tempStr);
 	}
+#endif
 	
 	// Check the HTTP version
 	// We only support version 1.0 and 1.1
@@ -1496,7 +1498,7 @@ static NSMutableArray *recentNonces;
 	}
 	else
 	{
-		if (++rangeIndex < [ranges count])
+		if (++rangeIndex < (int)[ranges count])
 		{
 			// Write range header
 			NSData *rangeHeader = [ranges_headers objectAtIndex:rangeIndex];
@@ -2066,7 +2068,7 @@ static NSMutableArray *recentNonces;
 			{
 				if (transferEncoding && ![transferEncoding caseInsensitiveCompare:@"Chunked"])
 				{
-					requestContentLength = -1;
+					requestContentLength = UINT64_MAX; // this used to be set to -1
 				}
 				else
 				{
@@ -2139,7 +2141,7 @@ static NSMutableArray *recentNonces;
 				if (requestContentLength > 0)
 				{
 					// Start reading the request body
-					if (requestContentLength == -1)
+					if (requestContentLength == UINT64_MAX)
 					{
 						// Chunked transfer
 						
