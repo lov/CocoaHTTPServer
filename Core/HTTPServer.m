@@ -22,11 +22,19 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_INFO; // | HTTP_LOG_FLAG_TRACE;
 
 @end
 
+@interface HTTPServer ()
+
+@property (nonatomic, readwrite) BOOL isRunning;
+
+@end
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @implementation HTTPServer
+
+@synthesize isRunning;
 
 /**
  * Standard Constructor.
@@ -93,7 +101,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_INFO; // | HTTP_LOG_FLAG_TRACE;
 		                                             name:WebSocketDidDieNotification
 		                                           object:nil];
 		
-		isRunning = NO;
+		[self setIsRunning:NO];
 	}
 	return self;
 }
@@ -232,6 +240,13 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_INFO; // | HTTP_LOG_FLAG_TRACE;
 
 - (UInt16)listeningPort
 {
+	if (dispatch_get_specific(IsOnServerQueueKey) != NULL) {
+		if (isRunning)
+			return [asyncSocket localPort];
+		else
+			return 0;
+	}
+	
 	__block UInt16 result;
 	
 	dispatch_sync(serverQueue, ^{
@@ -415,7 +430,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_INFO; // | HTTP_LOG_FLAG_TRACE;
 		{
 			HTTPLogInfo(@"%@: Started HTTP server on port %hu", THIS_FILE, [asyncSocket localPort]);
 			
-			isRunning = YES;
+			[self setIsRunning:YES];
 			[self publishBonjour];
 		}
 		else
@@ -446,7 +461,8 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_INFO; // | HTTP_LOG_FLAG_TRACE;
 		
 		// Stop listening / accepting incoming connections
 		[asyncSocket disconnect];
-		isRunning = NO;
+
+		[self setIsRunning:NO];
 		
 		if (!keepExistingConnections)
 		{
@@ -473,8 +489,12 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_INFO; // | HTTP_LOG_FLAG_TRACE;
 
 - (BOOL)isRunning
 {
-	__block BOOL result;
+	if (dispatch_get_specific(IsOnServerQueueKey) != NULL) {
+		return isRunning;
+	}
 	
+	__block BOOL result;
+
 	dispatch_sync(serverQueue, ^{
 		result = isRunning;
 	});

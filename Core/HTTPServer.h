@@ -48,8 +48,6 @@
 	NSMutableArray *webSockets;
 	NSLock *connectionsLock;
 	NSLock *webSocketsLock;
-	
-	BOOL isRunning;
 }
 
 /**
@@ -195,7 +193,7 @@
 - (void)stop;
 - (void)stop:(BOOL)keepExistingConnections;
 
-- (BOOL)isRunning;
+@property (nonatomic, readonly) BOOL isRunning;
 
 - (void)addWebSocket:(WebSocket *)ws;
 
