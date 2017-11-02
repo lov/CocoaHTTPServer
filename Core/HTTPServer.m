@@ -4,6 +4,8 @@
 #import "WebSocket.h"
 #import "HTTPLogging.h"
 
+#define safeAccessFor(PROP) { if (dispatch_get_specific(IsOnServerQueueKey) != NULL) { return PROP; } __block typeof(PROP) result; dispatch_sync(serverQueue, ^{ result = PROP; }); return result; }
+
 #if ! __has_feature(objc_arc)
 #warning This file must be compiled with ARC. Use -fobjc-arc flag (or convert project to ARC).
 #endif
@@ -141,13 +143,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_INFO; // | HTTP_LOG_FLAG_TRACE;
 **/
 - (NSString *)documentRoot
 {
-	__block NSString *result;
-	
-	dispatch_sync(serverQueue, ^{
-		result = documentRoot;
-	});
-	
-	return result;
+	safeAccessFor(documentRoot)
 }
 
 - (void)setDocumentRoot:(NSString *)value
@@ -180,13 +176,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_INFO; // | HTTP_LOG_FLAG_TRACE;
 **/
 - (Class)connectionClass
 {
-	__block Class result;
-	
-	dispatch_sync(serverQueue, ^{
-		result = connectionClass;
-	});
-	
-	return result;
+	safeAccessFor(connectionClass)
 }
 
 - (void)setConnectionClass:(Class)value
@@ -203,13 +193,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_INFO; // | HTTP_LOG_FLAG_TRACE;
 **/
 - (NSString *)interface
 {
-	__block NSString *result;
-	
-	dispatch_sync(serverQueue, ^{
-		result = interface;
-	});
-	
-	return result;
+	safeAccessFor(interface)
 }
 
 - (void)setInterface:(NSString *)value
@@ -229,34 +213,12 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_INFO; // | HTTP_LOG_FLAG_TRACE;
 **/
 - (UInt16)port
 {
-	__block UInt16 result;
-	
-	dispatch_sync(serverQueue, ^{
-		result = port;
-	});
-	
-    return result;
+	safeAccessFor(port)
 }
 
 - (UInt16)listeningPort
 {
-	if (dispatch_get_specific(IsOnServerQueueKey) != NULL) {
-		if (isRunning)
-			return [asyncSocket localPort];
-		else
-			return 0;
-	}
-	
-	__block UInt16 result;
-	
-	dispatch_sync(serverQueue, ^{
-		if (isRunning)
-			result = [asyncSocket localPort];
-		else
-			result = 0;
-	});
-	
-	return result;
+	safeAccessFor(isRunning ? [asyncSocket localPort] : 0)
 }
 
 - (void)setPort:(UInt16)value
@@ -274,13 +236,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_INFO; // | HTTP_LOG_FLAG_TRACE;
 **/
 - (NSString *)domain
 {
-	__block NSString *result;
-	
-	dispatch_sync(serverQueue, ^{
-		result = domain;
-	});
-	
-    return result;
+	safeAccessFor(domain)
 }
 
 - (void)setDomain:(NSString *)value
@@ -302,13 +258,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_INFO; // | HTTP_LOG_FLAG_TRACE;
 **/
 - (NSString *)name
 {
-	__block NSString *result;
-	
-	dispatch_sync(serverQueue, ^{
-		result = name;
-	});
-	
-	return result;
+	safeAccessFor(name)
 }
 
 - (NSString *)publishedName
@@ -351,13 +301,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_INFO; // | HTTP_LOG_FLAG_TRACE;
 **/
 - (NSString *)type
 {
-	__block NSString *result;
-	
-	dispatch_sync(serverQueue, ^{
-		result = type;
-	});
-	
-	return result;
+	safeAccessFor(type)
 }
 
 - (void)setType:(NSString *)value
@@ -375,13 +319,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_INFO; // | HTTP_LOG_FLAG_TRACE;
 **/
 - (NSDictionary *)TXTRecordDictionary
 {
-	__block NSDictionary *result;
-	
-	dispatch_sync(serverQueue, ^{
-		result = txtRecordDictionary;
-	});
-	
-	return result;
+	safeAccessFor(txtRecordDictionary)
 }
 
 - (void)setTXTRecordDictionary:(NSDictionary *)value
@@ -489,17 +427,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_INFO; // | HTTP_LOG_FLAG_TRACE;
 
 - (BOOL)isRunning
 {
-	if (dispatch_get_specific(IsOnServerQueueKey) != NULL) {
-		return isRunning;
-	}
-	
-	__block BOOL result;
-
-	dispatch_sync(serverQueue, ^{
-		result = isRunning;
-	});
-	
-	return result;
+	safeAccessFor(isRunning);
 }
 
 - (void)addWebSocket:(WebSocket *)ws
