@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4833B16520CC8CDC006BB436 /* HTTPConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 4833B13E20CC8CDC006BB436 /* HTTPConnection.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4833B16620CC8CDC006BB436 /* HTTPLogging.h in Headers */ = {isa = PBXBuildFile; fileRef = 4833B13F20CC8CDC006BB436 /* HTTPLogging.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4833B16620CC8CDC006BB436 /* HTTPLogging.h in Headers */ = {isa = PBXBuildFile; fileRef = 4833B13F20CC8CDC006BB436 /* HTTPLogging.h */; };
 		4833B16720CC8CDC006BB436 /* HTTPMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 4833B14020CC8CDC006BB436 /* HTTPMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4833B16820CC8CDC006BB436 /* WebSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 4833B14120CC8CDC006BB436 /* WebSocket.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4833B16920CC8CDC006BB436 /* HTTPAuthenticationRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 4833B14220CC8CDC006BB436 /* HTTPAuthenticationRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -156,21 +156,21 @@
 		4833B13D20CC8CDC006BB436 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				4833B15020CC8CDC006BB436 /* HTTPServer.h */,
+				4833B16420CC8CDC006BB436 /* HTTPServer.m */,
 				4833B13E20CC8CDC006BB436 /* HTTPConnection.h */,
+				4833B15220CC8CDC006BB436 /* HTTPConnection.m */,
+				4833B15420CC8CDC006BB436 /* HTTPResponse.h */,
 				4833B13F20CC8CDC006BB436 /* HTTPLogging.h */,
 				4833B14020CC8CDC006BB436 /* HTTPMessage.h */,
-				4833B14120CC8CDC006BB436 /* WebSocket.h */,
-				4833B14220CC8CDC006BB436 /* HTTPAuthenticationRequest.h */,
-				4833B14320CC8CDC006BB436 /* Responses */,
-				4833B15020CC8CDC006BB436 /* HTTPServer.h */,
 				4833B15120CC8CDC006BB436 /* HTTPMessage.m */,
-				4833B15220CC8CDC006BB436 /* HTTPConnection.m */,
-				4833B15320CC8CDC006BB436 /* WebSocket.m */,
-				4833B15420CC8CDC006BB436 /* HTTPResponse.h */,
-				4833B15520CC8CDC006BB436 /* Mime */,
+				4833B14220CC8CDC006BB436 /* HTTPAuthenticationRequest.h */,
 				4833B15C20CC8CDC006BB436 /* HTTPAuthenticationRequest.m */,
+				4833B14120CC8CDC006BB436 /* WebSocket.h */,
+				4833B15320CC8CDC006BB436 /* WebSocket.m */,
+				4833B14320CC8CDC006BB436 /* Responses */,
+				4833B15520CC8CDC006BB436 /* Mime */,
 				4833B15D20CC8CDC006BB436 /* Categories */,
-				4833B16420CC8CDC006BB436 /* HTTPServer.m */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -179,17 +179,17 @@
 			isa = PBXGroup;
 			children = (
 				4833B14420CC8CDC006BB436 /* HTTPAsyncFileResponse.h */,
-				4833B14520CC8CDC006BB436 /* HTTPErrorResponse.m */,
-				4833B14620CC8CDC006BB436 /* HTTPDataResponse.m */,
-				4833B14720CC8CDC006BB436 /* HTTPRedirectResponse.h */,
-				4833B14820CC8CDC006BB436 /* HTTPDynamicFileResponse.m */,
-				4833B14920CC8CDC006BB436 /* HTTPFileResponse.m */,
 				4833B14A20CC8CDC006BB436 /* HTTPAsyncFileResponse.m */,
-				4833B14B20CC8CDC006BB436 /* HTTPRedirectResponse.m */,
 				4833B14C20CC8CDC006BB436 /* HTTPDataResponse.h */,
-				4833B14D20CC8CDC006BB436 /* HTTPErrorResponse.h */,
-				4833B14E20CC8CDC006BB436 /* HTTPFileResponse.h */,
+				4833B14620CC8CDC006BB436 /* HTTPDataResponse.m */,
 				4833B14F20CC8CDC006BB436 /* HTTPDynamicFileResponse.h */,
+				4833B14820CC8CDC006BB436 /* HTTPDynamicFileResponse.m */,
+				4833B14D20CC8CDC006BB436 /* HTTPErrorResponse.h */,
+				4833B14520CC8CDC006BB436 /* HTTPErrorResponse.m */,
+				4833B14E20CC8CDC006BB436 /* HTTPFileResponse.h */,
+				4833B14920CC8CDC006BB436 /* HTTPFileResponse.m */,
+				4833B14720CC8CDC006BB436 /* HTTPRedirectResponse.h */,
+				4833B14B20CC8CDC006BB436 /* HTTPRedirectResponse.m */,
 			);
 			path = Responses;
 			sourceTree = "<group>";
@@ -198,11 +198,11 @@
 			isa = PBXGroup;
 			children = (
 				4833B15620CC8CDC006BB436 /* MultipartFormDataParser.h */,
-				4833B15720CC8CDC006BB436 /* MultipartMessageHeader.h */,
-				4833B15820CC8CDC006BB436 /* MultipartMessageHeaderField.m */,
 				4833B15920CC8CDC006BB436 /* MultipartFormDataParser.m */,
+				4833B15720CC8CDC006BB436 /* MultipartMessageHeader.h */,
 				4833B15A20CC8CDC006BB436 /* MultipartMessageHeader.m */,
 				4833B15B20CC8CDC006BB436 /* MultipartMessageHeaderField.h */,
+				4833B15820CC8CDC006BB436 /* MultipartMessageHeaderField.m */,
 			);
 			path = Mime;
 			sourceTree = "<group>";
@@ -210,12 +210,12 @@
 		4833B15D20CC8CDC006BB436 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				4833B15E20CC8CDC006BB436 /* DDNumber.m */,
-				4833B15F20CC8CDC006BB436 /* DDData.m */,
-				4833B16020CC8CDC006BB436 /* DDRange.h */,
-				4833B16120CC8CDC006BB436 /* DDNumber.h */,
-				4833B16220CC8CDC006BB436 /* DDRange.m */,
 				4833B16320CC8CDC006BB436 /* DDData.h */,
+				4833B15F20CC8CDC006BB436 /* DDData.m */,
+				4833B16120CC8CDC006BB436 /* DDNumber.h */,
+				4833B15E20CC8CDC006BB436 /* DDNumber.m */,
+				4833B16020CC8CDC006BB436 /* DDRange.h */,
+				4833B16220CC8CDC006BB436 /* DDRange.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
