@@ -204,7 +204,7 @@ static NSMutableArray *recentNonces;
 		lastNC = 0;
 		
 		// Create a new HTTP message
-		request = [[HTTPMessage alloc] initEmptyRequest];
+		request = HTTPMessage.emptyRequest;
 		
 		numHeaderLines = 0;
 		
@@ -2460,7 +2460,7 @@ static NSMutableArray *recentNonces;
 				// finishBody method and forgot to call [super finishBody].
 				NSAssert(request == nil, @"Request not properly released in finishBody");
 				
-				request = [[HTTPMessage alloc] initEmptyRequest];
+				request = HTTPMessage.emptyRequest;
 				
 				numHeaderLines = 0;
 				sentResponseHeaders = NO;
