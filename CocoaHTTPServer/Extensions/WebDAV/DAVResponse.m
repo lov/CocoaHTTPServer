@@ -334,7 +334,7 @@ static xmlNodePtr _XMLChildWithName(xmlNodePtr child, const xmlChar* name) {
 }
 
 
-- (UInt64) contentLength {
+- (NSUInteger)contentLength {
   return _data ? _data.length : 0;
 }
 

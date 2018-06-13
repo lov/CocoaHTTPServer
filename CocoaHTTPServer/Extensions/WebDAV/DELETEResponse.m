@@ -22,7 +22,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN;
   return self;
 }
 
-- (UInt64) contentLength {
+- (NSUInteger) contentLength {
   return 0;
 }
 

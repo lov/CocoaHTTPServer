@@ -12,7 +12,7 @@
     return self;
 }
 
-- (UInt64) contentLength {
+- (NSUInteger) contentLength {
     return 0;
 }
 

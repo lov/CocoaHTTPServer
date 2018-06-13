@@ -99,7 +99,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
 	return [self openFile];
 }
 
-- (UInt64)contentLength
+- (NSUInteger)contentLength
 {
 	HTTPLogTrace();
 	

@@ -30,9 +30,9 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_OFF; // | HTTP_LOG_FLAG_TRACE;
 	
 }
 
-- (UInt64)contentLength
+- (NSUInteger)contentLength
 {
-	UInt64 result = (UInt64)[data length];
+	NSUInteger result = [data length];
 	
 	HTTPLogTrace2(@"%@[%p]: contentLength - %llu", THIS_FILE, self, result);
 	

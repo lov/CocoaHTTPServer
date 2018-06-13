@@ -42,7 +42,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN;
   return [self initWithFilePath:path headers:headers body:body];
 }
 
-- (UInt64) contentLength {
+- (NSUInteger) contentLength {
   return 0;
 }
 

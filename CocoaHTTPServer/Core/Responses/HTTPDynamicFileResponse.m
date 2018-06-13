@@ -37,7 +37,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
 	return YES;
 }
 
-- (UInt64)contentLength
+- (NSUInteger)contentLength
 {
 	// This method shouldn't be called since we're using a chunked response.
 	// We override it just to be safe.
