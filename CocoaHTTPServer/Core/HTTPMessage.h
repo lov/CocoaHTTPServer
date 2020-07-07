@@ -20,29 +20,29 @@
 
 + (nonnull instancetype)emptyRequest;
 
-- (instancetype)initRequestWithMethod:(NSString *)method URL:(NSURL *)url version:(NSString *)version;
+- (instancetype _Nullable )initRequestWithMethod:(NSString * _Nullable)method URL:(NSURL * _Nullable)url version:(NSString * _Nullable)version;
 
-- (instancetype)initResponseWithStatusCode:(NSInteger)code description:(NSString *)description version:(NSString *)version;
+- (instancetype _Nullable )initResponseWithStatusCode:(NSInteger)code description:(NSString * _Nullable)description version:(NSString * _Nullable)version;
 
-- (BOOL)appendData:(NSData *)data;
+- (BOOL)appendData:(NSData * _Nullable)data;
 
 - (BOOL)isHeaderComplete;
 
-- (NSString *)version;
+- (NSString * _Nullable)version;
 
-- (NSString *)method;
-- (NSURL *)url;
+- (NSString * _Nullable)method;
+- (NSURL * _Nullable)url;
 
 - (NSInteger)statusCode;
 
-- (NSDictionary *)allHeaderFields;
-- (NSString *)headerField:(NSString *)headerField;
+- (NSDictionary * _Nullable)allHeaderFields;
+- (NSString * _Nullable)headerField:(NSString * _Nullable)headerField;
 
-- (void)setHeaderField:(NSString *)headerField value:(NSString *)headerFieldValue;
+- (void)setHeaderField:(NSString * _Nullable)headerField value:(NSString * _Nullable)headerFieldValue;
 
-- (NSData *)messageData;
+- (NSData * _Nullable)messageData;
 
-- (NSData *)body;
-- (void)setBody:(NSData *)body;
+- (NSData * _Nullable)body;
+- (void)setBody:(NSData * _Nullable)body;
 
 @end
